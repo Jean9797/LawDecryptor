@@ -18,11 +18,16 @@ public class Main {
         options.addOption(Option.builder("r").argName("roz").hasArg().desc("pokaż rozdział").build());
         options.addOption(Option.builder("s").desc("pokaż spis").build());
         options.addOption(Option.builder("d").argName("dz").hasArg().desc("pokaż spis działu").build());
+        options.addOption(Option.builder("F").desc("pokaż pełny spis").longOpt("full").build());
 
         CommandLine line = parser.parse(options, args);
         FileScanner file = new FileScanner();
         if(line.hasOption("f")){
-            file.read(line.getOptionValue("f"));
+            Statute statute = file.transform(line.getOptionValue("f"));
+            System.out.println(statute.toString());
+            System.out.println(statute.toBriefList());
         }
+
+
     }
 }

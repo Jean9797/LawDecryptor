@@ -1,4 +1,3 @@
-import java.util.List;
 
 /**
  * Interface for interacting with object structure of the act
@@ -8,18 +7,17 @@ import java.util.List;
 
 public interface INode {
     /**
-     * method which add a content to a INode object such as text or title
-     * @param line  string to add
-     * @param element   specify destiny of the first parameter
+     * method which is used to build dependence tree
+     *
+     * @param node will be added to children collection
      */
-    void addContent(String line, ActElement element);
+    void addChild(INode node);
 
     /**
-     * method which return string representation of the node
-     *
-     * @return content of a node
+     * method which add a content to a INode object such as text or title
+     * @param line  string to add
      */
-    String toString();
+    void addContent(String line);
 
     /**
      * return paren of a node
@@ -29,8 +27,9 @@ public interface INode {
     INode getParent();
 
     /**
+     * method which return string representation of the node
      *
-     * @return children in a sequence, if there are not any children return null
+     * @return content of a node
      */
-    INode nextChild();
+    String toString();
 }

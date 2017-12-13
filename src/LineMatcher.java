@@ -37,4 +37,10 @@ public class LineMatcher {
         }
         else return ActElement.Tekst;
     }
+
+    private Pattern dashEnd = Pattern.compile(".*[a-zżźćąśęńół]+-");
+
+    public boolean endsWithDash(String line){
+        return dashEnd.matcher(line).matches();
+    }
 }
