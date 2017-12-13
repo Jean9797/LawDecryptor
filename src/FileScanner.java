@@ -6,8 +6,9 @@ public class FileScanner {
     public void read(String file) throws IOException{
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
+            StructureBuilder builder = new StructureBuilder();
             while ((line = br.readLine()) != null) {
-                System.out.println(line);
+                builder.build(line);
             }
         }
     }

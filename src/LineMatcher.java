@@ -1,10 +1,10 @@
 import java.util.regex.Pattern;
 
-public class LineParser {
+public class LineMatcher {
     private Pattern kancelaria = Pattern.compile(".Kancelaria Sejmu");
     private Pattern smiec = Pattern.compile(".");
     private Pattern rozdzial = Pattern.compile("Rozdział [A-Z]+");
-    private Pattern tytul = Pattern.compile("[A-Z]+.*");
+    private Pattern tytul = Pattern.compile("[A-ZĄĘŻŹÓĆŚŁŃ[0-9], ]+");
     private Pattern artykul = Pattern.compile("Art\\. [0-9]+\\.");
     private Pattern ustep = Pattern.compile("[0-9]+\\. .+");
     private Pattern punkt = Pattern.compile("[0-9]+[a-z]?\\) .+");
