@@ -4,9 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ActComponent implements INode {
-    protected String title;
-    protected String index;
-    protected INode parent;
+    protected String title = null;
+    protected String index = null;
+    protected INode parent = null;
     protected List<INode> children = new ArrayList<>();
     protected List<String> content = new LinkedList<>();
     protected Iterator<INode> iterator = null;

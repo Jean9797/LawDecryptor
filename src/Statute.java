@@ -5,13 +5,18 @@ import java.util.List;
 
 public class Statute implements INode {
     private List<INode> children = new ArrayList<>();       //contains articles, chapters and subtitles.
-    private List<String> introduction = new LinkedList<>();
-    private List<String> title = new LinkedList<>();
+    private List<String> content = new LinkedList<>();
+    private String title = null;
     private final INode parent = null;
     private Iterator<INode> iterator = null;
 
     public void addTitle(String line){
-        title.add(line);
+        if (this.title == null){
+            this.title = line;
+        }
+        else {
+            this.title = this.title + "\n" + line;
+        }
     }
 
     @Override
@@ -21,7 +26,7 @@ public class Statute implements INode {
 
     @Override
     public void addContent(String line){
-        this.introduction.add(line);
+        this.content.add(line);
     }
 
     @Override
@@ -31,12 +36,8 @@ public class Statute implements INode {
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder("");
-        for(String text : this.title){
-            result.append(text);
-            result.append("\n");
-        }
-        for(String text : this.introduction){
+        StringBuilder result = new StringBuilder(this.title);
+        for(String text : this.content){
             result.append(text);
             result.append("\n");
         }
@@ -48,12 +49,7 @@ public class Statute implements INode {
 
     @Override
     public String getIndex() {
-        StringBuilder result = new StringBuilder();
-        for(String text : this.title){
-            result.append(text);
-            result.append("\n");
-        }
-        return result.toString();
+        return this.title;
     }
 
     public boolean hasNextChild(){
@@ -68,11 +64,7 @@ public class Statute implements INode {
     }
 
     public String toBriefList(){
-        StringBuilder result = new StringBuilder("");
-        for(String text : this.title){
-            result.append(text);
-            result.append("\n");
-        }
+        StringBuilder result = new StringBuilder(this.title);
         for(INode node : this.children){
             if(node instanceof Section || node instanceof Subsection)
                 result.append(node.toString());
