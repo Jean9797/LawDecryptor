@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Paragraph implements INode {
     private final String title;
+    private final String index;
     private final INode parent;
     private List<INode> children = new ArrayList<>();
     private List<String> content = new LinkedList<>();
@@ -13,6 +14,7 @@ public class Paragraph implements INode {
     public Paragraph(String line, INode parent){
         this.parent = parent;
         this.title = line;
+        this.index = line.substring(0, line.indexOf("."));
     }
 
     @Override
@@ -42,6 +44,10 @@ public class Paragraph implements INode {
             result.append(node.toString());
         }
         return result.toString();
+    }
+
+    public String getIndex(){
+        return this.index;
     }
 
     public boolean hasNextChild(){

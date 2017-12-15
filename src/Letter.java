@@ -5,12 +5,14 @@ import java.util.List;
 public class Letter implements INode {
     private final String title;
     private final INode parent;
+    private final String index;
     //private List<INode> children = new ArrayList<>();   letters do not have children, but if they do, it would be easy to do it
     private List<String> content = new LinkedList<>();
 
     public Letter(String line, INode parent){
         this.parent = parent;
         this.title = line;
+        this.index = line.substring(0, line.indexOf(")"));
     }
 
     @Override
@@ -40,5 +42,9 @@ public class Letter implements INode {
             result.append(node.toString());
         }*/
         return result.toString();
+    }
+
+    public String getIndex(){
+        return this.index;
     }
 }

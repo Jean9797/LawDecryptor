@@ -27,4 +27,9 @@ public class Subtitle implements INode {
     public String toString() {
         return title + "\n";
     }
+
+    @Override
+    public String getIndex() {
+        return this.title;
+    }
 }

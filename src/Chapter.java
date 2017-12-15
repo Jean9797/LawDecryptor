@@ -1,18 +1,19 @@
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Chapter implements INode {
     private final INode parent;
+    private final String index;
     private String name;
     private String title;
     private List<INode> subtitles = new LinkedList<>();
-    private Iterator<INode> iterator = null;
 
 
     public Chapter(String line, INode parent){
         this.parent = parent;
         this.name = line;
+        String tmp = line.substring(line.indexOf(" ") + 1);
+        this.index = converteFromRoman(tmp);
     }
 
     @Override
@@ -33,5 +34,13 @@ public class Chapter implements INode {
     @Override
     public String toString() {
         return this.name + "\n" + this.title + "\n";
+    }
+
+    private String converteFromRoman(String roman){
+        return (new Integer(RomanToInteger.romanToDecimal(roman))).toString();
+    }
+
+    public String getIndex(){
+        return this.index;
     }
 }

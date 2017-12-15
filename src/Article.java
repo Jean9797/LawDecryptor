@@ -6,7 +6,7 @@ import java.util.List;
 public class Article implements INode {
     private final String title;
     private final INode parent;
-    private final String number;
+    private final String index;
     private List<INode> children = new ArrayList<>();
     private List<String> content = new LinkedList<>();
     private Iterator<INode> iterator = null;
@@ -14,9 +14,9 @@ public class Article implements INode {
     public Article(String line, INode parent){
         this.parent = parent;
         this.title = line;
-        String tmp = line.substring(5);
+        String tmp = line.substring(line.indexOf(" ") + 1);
         tmp = tmp.substring(0, tmp.indexOf("."));
-        this.number = tmp;
+        this.index = tmp;
     }
 
     @Override
@@ -46,6 +46,10 @@ public class Article implements INode {
             result.append(node.toString());
         }
         return result.toString();
+    }
+
+    public String getIndex(){
+        return this.index;
     }
 
     public boolean hasNextChild(){

@@ -47,43 +47,44 @@ public class StructureBuilder {
         ActElement element = matcher.parse(line);
         switch (element) {
             case Kancelaria:
-                System.out.println(element.toString() + " : " + line);
+                //System.out.println(element.toString() + " : " + line);
                 skip = true;
                 break;
             case Smiec:
-                System.out.println(element.toString() + " : " + line);
+                //System.out.println(element.toString() + " : " + line);
                 break;
             case Rozdzial:
-                System.out.println(element.toString() + " : " + line);
+                //System.out.println(element.toString() + " : " + line);
                 currentChapter = new Chapter(line, statute);
-                statute.addChapter(currentChapter);
+                statute.addChild(currentChapter);
                 isChapterTitle = true;
                 break;
             case Tytul:
-                System.out.println(element.toString() + " : " + line);
+                //System.out.println(element.toString() + " : " + line);
                 if (trace.peek() instanceof Statute) {
                     statute.addTitle(line);
                 } else {
                     INode subtitle = new Subtitle(line, currentChapter);
+                    currentChapter.addChild(subtitle);
                     statute.addChild(subtitle);
                 }
                 break;
             case Artykul:
-                System.out.println(element.toString() + " : " + line);
+                //System.out.println(element.toString() + " : " + line);
                 while (!(trace.peek() instanceof Statute)) trace.pop();
                 INode article = new Article(line, trace.peek());
                 trace.peek().addChild(article);
                 trace.push(article);
                 break;
             case Ustep:
-                System.out.println(element.toString() + " : " + line);
+                //System.out.println(element.toString() + " : " + line);
                 while (!(trace.peek() instanceof Article)) trace.pop();
                 INode paragraph = new Paragraph(line, trace.peek());
                 trace.peek().addChild(paragraph);
                 trace.push(paragraph);
                 break;
             case Punkt:
-                System.out.println(element.toString() + " : " + line);
+                //System.out.println(element.toString() + " : " + line);
                 while (!(trace.peek() instanceof Paragraph)){
                     if (trace.peek() instanceof Article){
                         break;
@@ -95,7 +96,7 @@ public class StructureBuilder {
                 trace.push(point);
                 break;
             case Litera:
-                System.out.println(element.toString() + " : " + line);
+                //System.out.println(element.toString() + " : " + line);
                 while (!(trace.peek() instanceof Point)){
                     if (trace.peek() instanceof Article){
                         break;
@@ -108,12 +109,12 @@ public class StructureBuilder {
                 break;
             default:
                 if (isTransfer) {
-                    System.out.println(element.toString() + " : " + transfer + line);
+                    //System.out.println(element.toString() + " : " + transfer + line);
                     isTransfer = false;
                     String text = transfer + line;
                     trace.peek().addContent(text);
                 } else {
-                    System.out.println(element.toString() + " : " + line);
+                    //System.out.println(element.toString() + " : " + line);
                     trace.peek().addContent(line);
                 }
         }

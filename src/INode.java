@@ -32,4 +32,10 @@ public interface INode {
      * @return content of a node
      */
     String toString();
+
+    /**
+     *
+     * @return index which is characteristic for each element on particular level
+     */
+    String getIndex();
 }
