@@ -6,17 +6,21 @@ import org.apache.commons.cli.Options;
 public class OptionManager {
     private Options options;
 
+    public Options getOptions(){
+        return this.options;
+    }
+
     public Options createOptions(){
         this.options = new Options();
-        options.addOption(Option.builder("f").argName("ścieżka").hasArg().desc("odczytaj dany plik").required().build());
-        options.addOption(Option.builder("a").argName("numerArtykułu").hasArg().desc("pokaż pojedynczy artykuł").longOpt("artykuł").build());
-        options.addOption(Option.builder("A").argName("zakresArtykułów").numberOfArgs(2).valueSeparator('-').desc("pokaż zakres artykułów").longOpt("artykuły").build());
-        options.addOption(Option.builder("u").argName("ust").hasArg().desc("pokaż ustęp artykułu").build());
-        options.addOption(Option.builder("p").argName("pkt").hasArg().desc("pokaż punkt ustępu artykułu").build());
-        options.addOption(Option.builder("l").argName("lit").hasArg().desc("pokaż literę punktu ustępu artykułu").build());
-        options.addOption(Option.builder("r").argName("roz").hasArg().desc("pokaż rozdział").build());
+        options.addOption(Option.builder("f").argName("ścieżka do pliku").hasArg().desc("odczytaj dany plik").build());
+        options.addOption(Option.builder("a").argName("numer Artykułu").hasArg().desc("pokaż pojedynczy artykuł").longOpt("artykuł").build());
+        options.addOption(Option.builder("A").argName("zakres Artykułów").numberOfArgs(2).valueSeparator('-').desc("pokaż zakres artykułów").longOpt("artykuły").build());
+        options.addOption(Option.builder("u").argName("numer Ustępu").hasArg().desc("pokaż ustęp artykułu").build());
+        options.addOption(Option.builder("p").argName("numer punktu").hasArg().desc("pokaż punkt ustępu artykułu").build());
+        options.addOption(Option.builder("l").argName("numer litery").hasArg().desc("pokaż literę punktu ustępu artykułu").build());
+        options.addOption(Option.builder("r").argName("numer rozdziału").hasArg().desc("pokaż rozdział").build());
         options.addOption(Option.builder("s").desc("pokaż spis").build());
-        options.addOption(Option.builder("d").argName("dz").hasArg().desc("pokaż spis działu").build());
+        options.addOption(Option.builder("d").argName("numer działu").hasArg().desc("pokaż spis działu").build());
         options.addOption(Option.builder("F").desc("pokaż pełny spis").longOpt("full").build());
         options.addOption(Option.builder("h").desc("pokaż tą wiadomość").longOpt("help").build());
         return options;

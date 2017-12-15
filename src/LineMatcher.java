@@ -26,6 +26,9 @@ public class LineMatcher {
         else if(uchylony.matcher(line).matches()){
             return ActElement.Smiec;
         }
+        else if(pominiete.matcher(line).matches()){
+            return ActElement.Smiec;
+        }
         else if(dzial.matcher(line).matches()){
             this.isConstitution = false;
             return ActElement.Sekcja;
