@@ -1,10 +1,11 @@
-public class Subtitle implements INode {
-    private final String title;
+public class Subsection implements INode {
+    private final String name;
+    private String title = null;
     private final INode parent;
 
 
-    public Subtitle(String line, INode parent){
-        this.title = line;
+    public Subsection(String line, INode parent){
+        this.name = line;
         this.parent = parent;
     }
 
@@ -15,7 +16,7 @@ public class Subtitle implements INode {
 
     @Override
     public void addContent(String line) {
-        //there is no content
+        this.title = line;
     }
 
     @Override
@@ -25,11 +26,14 @@ public class Subtitle implements INode {
 
     @Override
     public String toString() {
-        return title + "\n";
+        if (this.title == null)
+            return this.name + "\n";
+        else
+            return this.name + "\n" + this.title + "\n";
     }
 
     @Override
     public String getIndex() {
-        return this.title;
+        return this.name;
     }
 }

@@ -74,32 +74,58 @@ public class Statute implements INode {
             result.append("\n");
         }
         for(INode node : this.children){
-            if(node instanceof Chapter || node instanceof Subtitle)
+            if(node instanceof Section || node instanceof Subsection)
                 result.append(node.toString());
         }
         return result.toString();
     }
 
-    public String printChapter(String number){
+    public String printSection(String number){
         if (!number.matches("[0-9]+")){
             number = (new Integer(RomanToInteger.romanToDecimal(number))).toString();
         }
         INode tmp = null;
         while(this.hasNextChild()){
             tmp = this.nextChild();
-            if(tmp instanceof Chapter && tmp.getIndex().equals(number)){
+            if(tmp instanceof Section && tmp.getIndex().equals(number)){
                 break;
             }
         }
         if (tmp == null) throw new NullPointerException("Critical error detected. No articles or chapters found.");
         if(!tmp.getIndex().equals(number)){
-            throw new IllegalArgumentException("Chapter not found. Probably wrong number of chapter. Check this out, please.");
+            throw new IllegalArgumentException("Section not found. Probably wrong number of chapter. Check this out, please.");
         }
         StringBuilder result = new StringBuilder(tmp.toString());
         while(this.hasNextChild()){
             tmp = this.nextChild();
-            if(tmp instanceof Chapter) break;
+            if(tmp instanceof Section) break;
             result.append(tmp.toString());
+        }
+        return result.toString();
+    }
+
+    public String printBriefSection(String number){
+        if (!number.matches("[0-9]+")){
+            number = (new Integer(RomanToInteger.romanToDecimal(number))).toString();
+        }
+        INode tmp = null;
+        while(this.hasNextChild()){
+            tmp = this.nextChild();
+            if(tmp instanceof Section && tmp.getIndex().equals(number)){
+                break;
+            }
+        }
+        if (tmp == null) throw new NullPointerException("Critical error detected. No articles or chapters found.");
+        if(!tmp.getIndex().equals(number)){
+            throw new IllegalArgumentException("Section not found. Probably wrong number of chapter. Check this out, please.");
+        }
+        StringBuilder result = new StringBuilder(tmp.toString());
+        while(this.hasNextChild()){
+            tmp = this.nextChild();
+            if(tmp instanceof Section) break;
+            if(tmp instanceof Subsection) {
+                result.append(tmp.toString());
+            }
         }
         return result.toString();
     }
@@ -120,7 +146,7 @@ public class Statute implements INode {
                 result.append(tmp.toString());
                 break;
             }
-            if (tmp instanceof Chapter || tmp instanceof Subtitle) continue;
+            if (tmp instanceof Section || tmp instanceof Subsection) continue;
             result.append(tmp.toString());
         }
         if (!(tmp.getIndex().equals(articles[1]))){

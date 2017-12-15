@@ -1,15 +1,15 @@
 import java.util.LinkedList;
 import java.util.List;
 
-public class Chapter implements INode {
+public class Section implements INode {
     private final INode parent;
     private final String index;
     private String name;
     private String title;
-    private List<INode> subtitles = new LinkedList<>();
+    private List<INode> subsections = new LinkedList<>();
 
 
-    public Chapter(String line, INode parent){
+    public Section(String line, INode parent){
         this.parent = parent;
         this.name = line;
         String tmp = line.substring(line.indexOf(" ") + 1);
@@ -18,7 +18,7 @@ public class Chapter implements INode {
 
     @Override
     public void addChild(INode node) {
-        this.subtitles.add(node);
+        this.subsections.add(node);
     }
 
     @Override
