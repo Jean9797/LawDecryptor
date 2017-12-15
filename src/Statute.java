@@ -91,8 +91,9 @@ public class Statute implements INode {
                 break;
             }
         }
-        if(tmp == null){
-            throw new IllegalArgumentException("Chapter not fount. Probably wrong number of chapter. Please check this out.");
+        if (tmp == null) throw new NullPointerException("Critical error detected. No articles or chapters found.");
+        if(!tmp.getIndex().equals(number)){
+            throw new IllegalArgumentException("Chapter not found. Probably wrong number of chapter. Check this out, please.");
         }
         StringBuilder result = new StringBuilder(tmp.toString());
         while(this.hasNextChild()){
@@ -128,37 +129,6 @@ public class Statute implements INode {
         return result.toString();
     }
 
-    public String printArticle(String number){
-        INode tmp = null;
-        while(this.hasNextChild()){
-            tmp = this.nextChild();
-            if (tmp instanceof Article && tmp.getIndex().equals(number)){
-                return tmp.toString();
-            }
-        }
-        throw new IllegalArgumentException("Article with " + number + " number wasn't found.");
-    }
-
-    public String printParagraph(String numberOfArticle, String numberOfParagraph){
-        INode tmp = null;
-        while(this.hasNextChild()){
-            tmp = this.nextChild();
-            if (tmp instanceof Article && tmp.getIndex().equals(numberOfArticle)){
-                Article article = (Article) tmp;
-                tmp = null;
-                while(article.hasNextChild()){
-                    tmp = article.nextChild();
-                    if(tmp instanceof Paragraph && tmp.getIndex().equals(numberOfParagraph)){
-                        return tmp.toString();
-                    }
-                }
-
-                throw new IllegalArgumentException("Paragraph with " + numberOfParagraph + " number wasn't found in article with " + numberOfArticle + "number.");
-            }
-        }
-        throw new IllegalArgumentException("Article with " + numberOfArticle + " number wasn't found.");
-    }
-
     public String printElement(String[] numberOfElements, ActElement element){          //this method return article or paragraph or point or letter
         INode tmp = null;
         while(this.hasNextChild()){
@@ -172,29 +142,29 @@ public class Statute implements INode {
                     tmp = article.nextChild();
                     if (tmp.getIndex().equals(numberOfElements[1])){
                         if (element.equals(ActElement.Ustep)){
-                            if (tmp instanceof Paragraph) return tmp.toString();
+                            if (tmp instanceof Paragraph) return "Art. " + numberOfElements[0] + ". ust. " + tmp.toString();
                             throw new IllegalArgumentException("Paragraph with " + numberOfElements[1] + " number wasn't found in Art. " + numberOfElements[0] + ".");
                         }
                         else {
                             if (tmp instanceof Point){
-                                if (element.equals(ActElement.Punkt)) return tmp.toString();
+                                if (element.equals(ActElement.Punkt)) return "Art. " + numberOfElements[0] + ". pkt. " + tmp.toString();
                                 Point point = (Point) tmp;
                                 while (point.hasNextChild()){
                                     tmp = point.nextChild();
-                                    if (tmp.getIndex().equals(numberOfElements[2])) return tmp.toString();
+                                    if (tmp.getIndex().equals(numberOfElements[2])) return "Art. " + numberOfElements[0] + ". pkt. " + numberOfElements[1] + ") lit. " + tmp.toString();
                                 }
                                 throw new IllegalArgumentException("Letter " + numberOfElements[2] + " wasn't found in Art. " + numberOfElements[0] + ". pkt. " + numberOfElements[1] + ")");
                             }
-                            if (tmp instanceof Paragraph){
+                            else {
                                 Paragraph paragraph = (Paragraph) tmp;
                                 while (paragraph.hasNextChild()){
                                     tmp = paragraph.nextChild();
                                     if (tmp.getIndex().equals(numberOfElements[2])){
-                                        if (element.equals(ActElement.Punkt)) return tmp.toString();
+                                        if (element.equals(ActElement.Punkt)) return "Art. " + numberOfElements[0] + ". ust. " + numberOfElements[1] + ". pkt. " + tmp.toString();
                                         Point point = (Point) tmp;
                                         while (point.hasNextChild()){
                                             tmp = point.nextChild();
-                                            if (tmp.getIndex().equals(numberOfElements[3])) return tmp.toString();
+                                            if (tmp.getIndex().equals(numberOfElements[3])) return "Art. " + numberOfElements[0] + ". ust. " + numberOfElements[1] + ". pkt. " + numberOfElements[2] + ") lit. " +  tmp.toString();
                                         }
                                         throw new IllegalArgumentException("Letter " + numberOfElements[3] + " wasn't found in Art. " + numberOfElements[0] + ". ust. " + numberOfElements[1] + ". pkt. " + numberOfElements[2] + ")");
                                     }
@@ -204,9 +174,12 @@ public class Statute implements INode {
                         }
                     }
                 }
-                throw new IllegalArgumentException("Element not found in Art. " + numberOfElements[0] + ".");
+                if (element.equals(ActElement.Ustep))
+                    throw new IllegalArgumentException("ust. " + numberOfElements[1] + ". not found in Art. " + numberOfElements[0] + ".");
+                else
+                    throw new IllegalArgumentException("pkt. " + numberOfElements[1] + ") not found in Art. " + numberOfElements[0] + ".");
             }
         }
-        throw new IllegalArgumentException("Article with " + numberOfElements[0] + " number wasn't found.");
+        throw new IllegalArgumentException("Art. " + numberOfElements[0] + ". wasn't found.");
     }
 }

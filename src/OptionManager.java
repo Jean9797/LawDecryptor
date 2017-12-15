@@ -4,9 +4,7 @@ import org.apache.commons.cli.Options;
 
 public class OptionManager {
 
-
-
-    /*private Options createOptions(){
+    public Options createOptions(){
         Options options = new Options();
         options.addOption(Option.builder("f").argName("ścieżka").hasArg().desc("odczytaj dany plik").required().build());
         options.addOption(Option.builder("a").argName("numerArtykułu").hasArg().desc("pokaż pojedynczy artykuł").longOpt("artykuł").build());
@@ -19,9 +17,9 @@ public class OptionManager {
         options.addOption(Option.builder("d").argName("dz").hasArg().desc("pokaż spis działu").build());
         options.addOption(Option.builder("F").desc("pokaż pełny spis").longOpt("full").build());
         return options;
-    }*/
+    }
 
-    public boolean countOptions(CommandLine cmd){
+    public int countSelectedOptions(CommandLine cmd){
         int number = 0;
         if(cmd.hasOption("F")){
             number++;
@@ -41,7 +39,64 @@ public class OptionManager {
         if (cmd.hasOption("a")){
             number++;
         }
-        return number == 1;
+        return number;
+    }
+
+    public void executeSelectedOptions(CommandLine cmd, Statute statute){
+        if(cmd.hasOption("F")){
+            System.out.println(statute.toString());
+        }
+        else if (cmd.hasOption("d")){
+            System.out.println(statute);
+        }
+        else if (cmd.hasOption("s")){
+            System.out.println(statute.toBriefList());
+        }
+        else if (cmd.hasOption("r")){
+            System.out.println(statute.printChapter(cmd.getOptionValue("r")));
+        }
+        else if (cmd.hasOption("A")){
+            System.out.println(statute.printRangeOfArticles(cmd.getOptionValues("A")));
+        }
+        else if (cmd.hasOption("a")){
+            if (cmd.hasOption("u")){
+                if (cmd.hasOption("p")){
+                    if (cmd.hasOption("l")){
+                        String[] optionValues = {cmd.getOptionValue("a"), cmd.getOptionValue("u"), cmd.getOptionValue("p"), cmd.getOptionValue("l")};
+                        System.out.println(statute.printElement(optionValues, ActElement.Litera));
+                    }
+                    else{
+                        String[] optionValues = {cmd.getOptionValue("a"), cmd.getOptionValue("u"), cmd.getOptionValue("p")};
+                        System.out.println(statute.printElement(optionValues, ActElement.Punkt));
+                    }
+                }
+                else {
+                    if (cmd.hasOption("l")){
+                        throw new IllegalArgumentException("You can't specify letter without specify point.");
+                    }
+                    else {
+                        String[] optionValues = {cmd.getOptionValue("a"), cmd.getOptionValue("u")};
+                        System.out.println(statute.printElement(optionValues, ActElement.Ustep));
+                    }
+                }
+            }
+            else {
+                if (cmd.hasOption("p")){
+                    if (cmd.hasOption("l")){
+                        String[] optionValues = {cmd.getOptionValue("a"), cmd.getOptionValue("p"), cmd.getOptionValue("l")};
+                        System.out.println(statute.printElement(optionValues, ActElement.Litera));
+                    }
+                    else {
+                        String[] optionValues = {cmd.getOptionValue("a"), cmd.getOptionValue("p")};
+                        System.out.println(statute.printElement(optionValues, ActElement.Punkt));
+                    }
+                }
+                else {
+                    String[] optionValues = {cmd.getOptionValue("a")};
+                    System.out.println(statute.printElement(optionValues, ActElement.Artykul));
+                }
+            }
+        }
     }
 
 }

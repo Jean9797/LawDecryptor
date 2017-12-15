@@ -5,8 +5,8 @@ public class LineMatcher {
     private Pattern smiec = Pattern.compile(".");
     private Pattern rozdzial = Pattern.compile("Rozdział [A-Z]+");
     private Pattern tytul = Pattern.compile("[A-ZĄĘŻŹÓĆŚŁŃ[0-9], ]+");
-    private Pattern artykul = Pattern.compile("Art\\. [0-9]+\\.");
-    private Pattern ustep = Pattern.compile("[0-9]+\\. .+");
+    private Pattern artykul = Pattern.compile("Art\\. [0-9]+[a-z]?\\.");
+    private Pattern ustep = Pattern.compile("[0-9]+[a-z]?\\. .+");
     private Pattern punkt = Pattern.compile("[0-9]+[a-z]?\\) .+");
     private Pattern litera = Pattern.compile("[a-z]\\) .+");
 
