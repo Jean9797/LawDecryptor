@@ -3,7 +3,7 @@ import java.util.regex.Pattern;
 public class LineMatcher {
     private boolean isConstitution = true;
 
-    private Pattern kancelaria = Pattern.compile(".Kancelaria Sejmu");
+    private Pattern kancelaria = Pattern.compile(".Kancelaria Sejmu.*");
     private Pattern smiec = Pattern.compile(".");
     private Pattern uchylony = Pattern.compile(".*\\(uchylony\\)");
     private Pattern pominiete = Pattern.compile(".*\\(pominięte\\)");

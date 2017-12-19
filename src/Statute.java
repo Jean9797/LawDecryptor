@@ -6,17 +6,12 @@ import java.util.List;
 public class Statute implements INode {
     private List<INode> children = new ArrayList<>();       //contains articles, chapters and subtitles.
     private List<String> content = new LinkedList<>();
-    private String title = null;
+    private String title = "";
     private final INode parent = null;
     private Iterator<INode> iterator = null;
 
     public void addTitle(String line){
-        if (this.title == null){
-            this.title = line;
-        }
-        else {
-            this.title = this.title + "\n" + line;
-        }
+        this.title = this.title + line + "\n";
     }
 
     @Override

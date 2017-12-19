@@ -55,38 +55,38 @@ public class StructureBuilder {
         ActElement element = matcher.parse(line);
         switch (element) {
             case Kancelaria:
-                //System.out.println(element.toString() + " : " + line);
+                System.out.println(element.toString() + " : " + line);
                 skip = true;
                 break;
             case Smiec:
-                //System.out.println(element.toString() + " : " + line);
+                System.out.println(element.toString() + " : " + line);
                 break;
             case Sekcja:
-                //System.out.println(element.toString() + " : " + line);
+                System.out.println(element.toString() + " : " + line);
                 this.createSection(line);
                 break;
             case Tytul:
-                //System.out.println(element.toString() + " : " + line);
+                System.out.println(element.toString() + " : " + line);
                 this.createTitle(line);
                 break;
             case Podrozdzial:
-                //System.out.println(element.toString() + " : " + line);
+                System.out.println(element.toString() + " : " + line);
                 this.createSubchapter(line);
                 break;
             case Artykul:
-                //System.out.println(element.toString() + " : " + line);
+                System.out.println(element.toString() + " : " + line);
                 this.createArticle(line);
                 break;
             case Ustep:
-                //System.out.println(element.toString() + " : " + line);
+                System.out.println(element.toString() + " : " + line);
                 this.createParagraph(line);
                 break;
             case Punkt:
-                //System.out.println(element.toString() + " : " + line);
+                System.out.println(element.toString() + " : " + line);
                 this.createPoint(line);
                 break;
             case Litera:
-                //System.out.println(element.toString() + " : " + line);
+                System.out.println(element.toString() + " : " + line);
                 this.createLetter(line);
                 break;
             default:
@@ -173,12 +173,12 @@ public class StructureBuilder {
 
     private void addLine(String line){
         if (isTransfer) {
-            //System.out.println(ActElement.Tekst.toString() + " : " + transfer + line);
+            System.out.println(ActElement.Tekst.toString() + " : " + transfer + line);
             isTransfer = false;
             String text = transfer + line;
             trace.peek().addContent(text);
         } else {
-            //System.out.println(ActElement.Tekst.toString() + " : " + line);
+            System.out.println(ActElement.Tekst.toString() + " : " + line);
             trace.peek().addContent(line);
         }
     }

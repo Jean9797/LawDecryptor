@@ -53,10 +53,6 @@ public class OptionManager {
     }
 
     public void executeSelectedOptions(CommandLine cmd, Statute statute){
-        if(cmd.hasOption("h")){
-            HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp( "java main", options , true);
-        }
         if(cmd.hasOption("F")){
             System.out.println(statute.toString());
         }
