@@ -14,7 +14,7 @@ public class Main {
 
         if (cmd.hasOption("h")){
             HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp( "java something", optionManager.getOptions() , true);
+            formatter.printHelp( "java -cp bin:commons-cli-1.4/commons-cli-1.4.jar Main", optionManager.getOptions() , true);
             return;
         }
 
