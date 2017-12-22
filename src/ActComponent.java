@@ -19,6 +19,7 @@ public class ActComponent implements INode {
         this.type = typeAndIndex.getType();
     }
 
+    @Override
     public void addTitle(String line){
         this.title = this.title + line + "\n";
     }
@@ -51,14 +52,17 @@ public class ActComponent implements INode {
         return result.toString();
     }
 
+    @Override
     public String getIndex(){
         return this.index;
     }
 
+    @Override
     public ActElementType getType() {
         return type;
     }
 
+    @Override
     public boolean hasNextChild(){
         if(this.iterator == null){
             iterator = children.iterator();
@@ -66,6 +70,7 @@ public class ActComponent implements INode {
         return this.iterator.hasNext();
     }
 
+    @Override
     public INode nextChild(){
         return iterator.next();
     }

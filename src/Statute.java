@@ -15,9 +15,6 @@ public class Statute extends ActComponent {
     }
 
     public String printSection(String number){
-        if (!number.matches("[0-9]+")){
-            number = (new Integer(RomanToInteger.romanToDecimal(number))).toString();
-        }
         INode tmp = null;
         while(this.hasNextChild()){
             tmp = this.nextChild();
@@ -39,9 +36,6 @@ public class Statute extends ActComponent {
     }
 
     public String printBriefSection(String number){
-        if (!number.matches("[0-9]+")){
-            number = (new Integer(RomanToInteger.romanToDecimal(number))).toString();
-        }
         INode tmp = null;
         while(this.hasNextChild()){
             tmp = this.nextChild();

@@ -50,14 +50,10 @@ public class LineMatcher {
         Pattern pattern;
         Matcher matcher;
         switch (type){
-            case Ustawa:
-                return "";
             case Sekcja:
                 String tmp = line.substring(line.indexOf(" ") + 1);
-                return this.converteFromRoman(tmp);
+                return tmp;
             case Podsekcja:
-                return "";
-            case Tytul:
                 return "";
             case Artykul:
                 pattern = Pattern.compile("Art\\. ([0-9]+[a-z]?)\\.");
@@ -84,9 +80,5 @@ public class LineMatcher {
             default:
                 throw new IllegalArgumentException("ActElementType " + type.toString() + " is not allowed in excludeIndex method.");
         }
-    }
-
-    private String converteFromRoman(String roman){
-        return (new Integer(RomanToInteger.romanToDecimal(roman))).toString();
     }
 }

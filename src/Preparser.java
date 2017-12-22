@@ -25,7 +25,7 @@ public class Preparser {
     }
 
     private void process(String line){
-        if (kancelaria.matcher(line).matches() || data.matcher(line).matches() || smiec.matcher(line).matches() || uchylony.matcher(line).matches() || pominiete.matcher(line).matches()){}
+        if (kancelaria.matcher(line).matches() || data.matcher(line).matches() || smiec.matcher(line).matches() || uchylony.matcher(line).matches() || pominiete.matcher(line).matches() || line.equals("")){}
         else if (chainedArticle.matcher(line).matches()){
             Pattern pattern = Pattern.compile("(Art\\..[0-9]+[a-z]?\\.) (.*)");
             Matcher matcher = pattern.matcher(line);

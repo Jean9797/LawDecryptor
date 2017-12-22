@@ -7,6 +7,13 @@
 
 public interface INode {
     /**
+     * method which is used to add title of the component
+     *
+     * @param line contains title
+     */
+    void addTitle(String line);
+
+    /**
      * method which is used to build dependence tree
      *
      * @param node will be added to children collection

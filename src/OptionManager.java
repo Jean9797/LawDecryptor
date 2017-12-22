@@ -25,6 +25,16 @@ public class OptionManager {
         return options;
     }
 
+    public void checkCorrectnessOfTheArguments(CommandLine cmd){
+        if ((!cmd.hasOption("f") && !cmd.hasOption("h")) || (cmd.hasOption("f") && cmd.hasOption("h"))){
+            throw new IllegalArgumentException("You must choose only one from -f <file path> or -h for help.");
+        }
+
+        if (this.countSelectedOptions(cmd) != 1){
+            throw new IllegalArgumentException("You must choose only one parameter from: -h, -F, -d, -s, -r, -A, -a");
+        }
+    }
+
     public int countSelectedOptions(CommandLine cmd){
         int number = 0;
         if(cmd.hasOption("h")){
