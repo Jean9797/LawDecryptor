@@ -1,9 +1,8 @@
-public enum ActElement {
-    Kancelaria,
-    Smiec,
+public enum ActElementType {
+    Ustawa,
     Sekcja,
     Tytul,
-    Podrozdzial,
+    Podsekcja,
     Artykul,
     Ustep,
     Punkt,

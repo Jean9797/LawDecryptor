@@ -38,4 +38,22 @@ public interface INode {
      * @return index which is characteristic for each element on particular level
      */
     String getIndex();
+
+    /**
+     *
+     * @return type of the component
+     */
+    ActElementType getType();
+
+    /**
+     *
+     * @return true if the next child exists, otherwise false
+     */
+    boolean hasNextChild();
+
+    /**
+     *
+     * @return the next child
+     */
+    INode nextChild();
 }

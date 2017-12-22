@@ -1,67 +1,14 @@
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+public class Statute extends ActComponent {
 
-public class Statute implements INode {
-    private List<INode> children = new ArrayList<>();       //contains articles, chapters and subtitles.
-    private List<String> content = new LinkedList<>();
-    private String title = "";
-    private final INode parent = null;
-    private Iterator<INode> iterator = null;
-
-    public void addTitle(String line){
-        this.title = this.title + line + "\n";
-    }
-
-    @Override
-    public void addChild(INode node) {
-        this.children.add(node);
-    }
-
-    @Override
-    public void addContent(String line){
-        this.content.add(line);
-    }
-
-    @Override
-    public INode getParent() {
-        return parent;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder result = new StringBuilder(this.title);
-        for(String text : this.content){
-            result.append(text);
-            result.append("\n");
-        }
-        for(INode node : this.children){
-            result.append(node.toString());
-        }
-        return result.toString();
-    }
-
-    @Override
-    public String getIndex() {
-        return this.title;
-    }
-
-    public boolean hasNextChild(){
-        if(this.iterator == null){
-            iterator = children.iterator();
-        }
-        return this.iterator.hasNext();
-    }
-
-    public INode nextChild(){
-        return iterator.next();
+    public Statute(){
+        super("", null, new TypeAndIndex(ActElementType.Ustawa, ""));
+        this.title = "";
     }
 
     public String toBriefList(){
         StringBuilder result = new StringBuilder(this.title);
         for(INode node : this.children){
-            if(node instanceof Section || node instanceof Subsection)
+            if(node.getType() == ActElementType.Sekcja || node.getType() == ActElementType.Podsekcja)
                 result.append(node.toString());
         }
         return result.toString();
@@ -74,7 +21,7 @@ public class Statute implements INode {
         INode tmp = null;
         while(this.hasNextChild()){
             tmp = this.nextChild();
-            if(tmp instanceof Section && tmp.getIndex().equals(number)){
+            if(tmp.getType() == ActElementType.Sekcja && tmp.getIndex().equals(number)){
                 break;
             }
         }
@@ -85,7 +32,7 @@ public class Statute implements INode {
         StringBuilder result = new StringBuilder(tmp.toString());
         while(this.hasNextChild()){
             tmp = this.nextChild();
-            if(tmp instanceof Section) break;
+            if(tmp.getType() == ActElementType.Sekcja) break;
             result.append(tmp.toString());
         }
         return result.toString();
@@ -98,7 +45,7 @@ public class Statute implements INode {
         INode tmp = null;
         while(this.hasNextChild()){
             tmp = this.nextChild();
-            if(tmp instanceof Section && tmp.getIndex().equals(number)){
+            if(tmp.getType() == ActElementType.Sekcja && tmp.getIndex().equals(number)){
                 break;
             }
         }
@@ -109,8 +56,8 @@ public class Statute implements INode {
         StringBuilder result = new StringBuilder(tmp.toString());
         while(this.hasNextChild()){
             tmp = this.nextChild();
-            if(tmp instanceof Section) break;
-            if(tmp instanceof Subsection) {
+            if(tmp.getType() == ActElementType.Sekcja) break;
+            if(tmp.getType() == ActElementType.Podsekcja) {
                 result.append(tmp.toString());
             }
         }
@@ -121,7 +68,7 @@ public class Statute implements INode {
         INode tmp = null;
         while(this.hasNextChild()){
             tmp = this.nextChild();
-            if(tmp instanceof Article && tmp.getIndex().equals(articles[0])) break;
+            if(tmp.getType() == ActElementType.Artykul && tmp.getIndex().equals(articles[0])) break;
         }
         if (tmp == null){
             throw new IllegalArgumentException("Wrong articles range. Please type proper numbers after -A");
@@ -129,11 +76,11 @@ public class Statute implements INode {
         StringBuilder result = new StringBuilder(tmp.toString());
         while(this.hasNextChild()){
             tmp = this.nextChild();
-            if(tmp instanceof Article && tmp.getIndex().equals(articles[1])){
+            if(tmp.getType() == ActElementType.Artykul && tmp.getIndex().equals(articles[1])){
                 result.append(tmp.toString());
                 break;
             }
-            if (tmp instanceof Section || tmp instanceof Subsection) continue;
+            if (tmp.getType() == ActElementType.Sekcja || tmp.getType() == ActElementType.Podsekcja) continue;
             result.append(tmp.toString());
         }
         if (!(tmp.getIndex().equals(articles[1]))){
@@ -142,26 +89,62 @@ public class Statute implements INode {
         return result.toString();
     }
 
-    public String printElement(String[] numberOfElements, ActElement element){          //this method return article or paragraph or point or letter
+    public String printActElement(TypeAndIndex[] elements){
+        return printActElementEngine(elements, 0, this, "");
+    }
+
+    private String printActElementEngine(TypeAndIndex[] elements, int deepth, INode current, String path){
+        path = path + this.buildPath(elements[deepth]);
+        INode child;
+        while (current.hasNextChild()){
+            child = current.nextChild();
+            if (child.getType() == elements[deepth].getType() && child.getIndex().equals(elements[deepth].getIndex())){
+                if (deepth < elements.length - 1)
+                    return printActElementEngine(elements, deepth + 1, child, path);
+                else
+                    return path + "\n" + child.toString();
+            }
+        }
+        throw new ElementNotFoundException(path + " wasn't found.");
+    }
+
+    private String buildPath(TypeAndIndex typeAndIndex){
+        switch (typeAndIndex.getType()){
+            case Artykul:
+                return "Art. " + typeAndIndex.getIndex() + ".";
+            case Ustep:
+                return " ust. " + typeAndIndex.getIndex() + ".";
+            case Punkt:
+                return " pkt. " + typeAndIndex.getIndex() + ")";
+            case Litera:
+                return " lit. " + typeAndIndex.getIndex() + ")";
+            default:
+                return "";
+        }
+    }
+
+    @Deprecated
+    public String printElement(String[] numberOfElements, ActElementType element){          //this method return article or paragraph or point or letter
         INode tmp = null;
         while(this.hasNextChild()){
             tmp = this.nextChild();
-            if (tmp instanceof Article && tmp.getIndex().equals(numberOfElements[0])){
-                Article article = (Article) tmp;
+            if (tmp.getType() == ActElementType.Artykul && tmp.getIndex().equals(numberOfElements[0])){
+                INode article = tmp;
 
-                if (element.equals(ActElement.Artykul)) return article.toString();
+                if (element.equals(ActElementType.Artykul)) return article.toString();
 
                 while (article.hasNextChild()){
                     tmp = article.nextChild();
                     if (tmp.getIndex().equals(numberOfElements[1])){
-                        if (element.equals(ActElement.Ustep)){
-                            if (tmp instanceof Paragraph) return "Art. " + numberOfElements[0] + ". ust. " + tmp.toString();
-                            throw new IllegalArgumentException("Paragraph with " + numberOfElements[1] + " number wasn't found in Art. " + numberOfElements[0] + ".");
+                        if (element.equals(ActElementType.Ustep)){
+                            if (tmp.getType() == ActElementType.Ustep) return "Art. " + numberOfElements[0] + ". ust. " + tmp.toString();
+                            throw new IllegalArgumentException("Paragraph " + numberOfElements[1] + " wasn't found in Art. " + numberOfElements[0] + ".");
                         }
                         else {
-                            if (tmp instanceof Point){
-                                if (element.equals(ActElement.Punkt)) return "Art. " + numberOfElements[0] + ". pkt. " + tmp.toString();
-                                Point point = (Point) tmp;
+                            if (tmp.getType() == ActElementType.Punkt){
+                                if (element.equals(ActElementType.Punkt)) return "Art. " + numberOfElements[0] + ". pkt. " + tmp.toString();
+                                if (numberOfElements.length == 2) throw new IllegalArgumentException("Point " + numberOfElements[1] + "wasn't found in Art. " + numberOfElements[0] + ".");
+                                INode point = tmp;
                                 while (point.hasNextChild()){
                                     tmp = point.nextChild();
                                     if (tmp.getIndex().equals(numberOfElements[2])) return "Art. " + numberOfElements[0] + ". pkt. " + numberOfElements[1] + ") lit. " + tmp.toString();
@@ -169,12 +152,12 @@ public class Statute implements INode {
                                 throw new IllegalArgumentException("Letter " + numberOfElements[2] + " wasn't found in Art. " + numberOfElements[0] + ". pkt. " + numberOfElements[1] + ")");
                             }
                             else {
-                                Paragraph paragraph = (Paragraph) tmp;
+                                INode paragraph = tmp;
                                 while (paragraph.hasNextChild()){
                                     tmp = paragraph.nextChild();
                                     if (tmp.getIndex().equals(numberOfElements[2])){
-                                        if (element.equals(ActElement.Punkt)) return "Art. " + numberOfElements[0] + ". ust. " + numberOfElements[1] + ". pkt. " + tmp.toString();
-                                        Point point = (Point) tmp;
+                                        if (element.equals(ActElementType.Punkt)) return "Art. " + numberOfElements[0] + ". ust. " + numberOfElements[1] + ". pkt. " + tmp.toString();
+                                        INode point = tmp;
                                         while (point.hasNextChild()){
                                             tmp = point.nextChild();
                                             if (tmp.getIndex().equals(numberOfElements[3])) return "Art. " + numberOfElements[0] + ". ust. " + numberOfElements[1] + ". pkt. " + numberOfElements[2] + ") lit. " +  tmp.toString();
@@ -187,7 +170,7 @@ public class Statute implements INode {
                         }
                     }
                 }
-                if (element.equals(ActElement.Ustep))
+                if (element.equals(ActElementType.Ustep))
                     throw new IllegalArgumentException("ust. " + numberOfElements[1] + ". not found in Art. " + numberOfElements[0] + ".");
                 else
                     throw new IllegalArgumentException("pkt. " + numberOfElements[1] + ") not found in Art. " + numberOfElements[0] + ".");

@@ -1,5 +1,7 @@
 import org.apache.commons.cli.*;
+
 import java.io.IOException;
+import java.util.List;
 
 public class Main {
 
@@ -22,8 +24,15 @@ public class Main {
             return;
         }
 
-        FileTransformer file = new FileTransformer();
-        Statute statute = file.transform(cmd.getOptionValue("f"));
+        FileScanner file = new FileScanner();
+        List<String> text = file.read(cmd.getOptionValue("f"));
+        Preparser preparser = new Preparser();
+        List<String> preparedText = preparser.preparse(text);
+        StructureBuilder builder = new StructureBuilder();
+        for (String line : preparedText){
+            builder.build(line);
+        }
+        Statute statute = builder.getStatute();
         optionManager.executeSelectedOptions(cmd, statute);
     }
 }

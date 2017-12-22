@@ -1,17 +1,19 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
-public class FileTransformer {
+public class FileScanner {
 
-    public Statute transform(String file) throws IOException{
-        StructureBuilder builder = new StructureBuilder();
+    public List<String> read(String file) throws IOException {
+        List<String> content = new LinkedList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = br.readLine()) != null) {
-                builder.build(line);
+                content.add(line);
             }
         }
-        return builder.getStatute();
+        return content;
     }
 }

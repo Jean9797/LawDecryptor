@@ -4,12 +4,24 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ActComponent implements INode {
-    protected String title = null;
+    protected ActElementType type = null;
+    protected String title = "";
     protected String index = null;
     protected INode parent = null;
     protected List<INode> children = new ArrayList<>();
     protected List<String> content = new LinkedList<>();
     protected Iterator<INode> iterator = null;
+
+    public ActComponent(String line, INode parent, TypeAndIndex typeAndIndex){
+        this.parent = parent;
+        addTitle(line);
+        this.index = typeAndIndex.getIndex();
+        this.type = typeAndIndex.getType();
+    }
+
+    public void addTitle(String line){
+        this.title = this.title + line + "\n";
+    }
 
     @Override
     public void addChild(INode node) {
@@ -29,7 +41,6 @@ public class ActComponent implements INode {
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder(this.title);
-        result.append("\n");
         for(String text : this.content){
             result.append(text);
             result.append("\n");
@@ -42,6 +53,10 @@ public class ActComponent implements INode {
 
     public String getIndex(){
         return this.index;
+    }
+
+    public ActElementType getType() {
+        return type;
     }
 
     public boolean hasNextChild(){

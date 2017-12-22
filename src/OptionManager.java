@@ -1,5 +1,4 @@
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
@@ -72,12 +71,17 @@ public class OptionManager {
             if (cmd.hasOption("u")){
                 if (cmd.hasOption("p")){
                     if (cmd.hasOption("l")){
-                        String[] optionValues = {cmd.getOptionValue("a"), cmd.getOptionValue("u"), cmd.getOptionValue("p"), cmd.getOptionValue("l")};
-                        System.out.println(statute.printElement(optionValues, ActElement.Litera));
+                        TypeAndIndex[] optionValues = {new TypeAndIndex(ActElementType.Artykul, cmd.getOptionValue("a")),
+                                new TypeAndIndex(ActElementType.Ustep, cmd.getOptionValue("u")),
+                                new TypeAndIndex(ActElementType.Punkt, cmd.getOptionValue("p")),
+                                new TypeAndIndex(ActElementType.Litera, cmd.getOptionValue("l"))};
+                        System.out.println(statute.printActElement(optionValues));
                     }
                     else{
-                        String[] optionValues = {cmd.getOptionValue("a"), cmd.getOptionValue("u"), cmd.getOptionValue("p")};
-                        System.out.println(statute.printElement(optionValues, ActElement.Punkt));
+                        TypeAndIndex[] optionValues = {new TypeAndIndex(ActElementType.Artykul, cmd.getOptionValue("a")),
+                                new TypeAndIndex(ActElementType.Ustep, cmd.getOptionValue("u")),
+                                new TypeAndIndex(ActElementType.Punkt, cmd.getOptionValue("p"))};
+                        System.out.println(statute.printActElement(optionValues));
                     }
                 }
                 else {
@@ -85,25 +89,34 @@ public class OptionManager {
                         throw new IllegalArgumentException("You can't specify letter without specify point.");
                     }
                     else {
-                        String[] optionValues = {cmd.getOptionValue("a"), cmd.getOptionValue("u")};
-                        System.out.println(statute.printElement(optionValues, ActElement.Ustep));
+                        TypeAndIndex[] optionValues = {new TypeAndIndex(ActElementType.Artykul, cmd.getOptionValue("a")),
+                                new TypeAndIndex(ActElementType.Ustep, cmd.getOptionValue("u"))};
+                        System.out.println(statute.printActElement(optionValues));
                     }
                 }
             }
             else {
                 if (cmd.hasOption("p")){
                     if (cmd.hasOption("l")){
-                        String[] optionValues = {cmd.getOptionValue("a"), cmd.getOptionValue("p"), cmd.getOptionValue("l")};
-                        System.out.println(statute.printElement(optionValues, ActElement.Litera));
+                        TypeAndIndex[] optionValues = {new TypeAndIndex(ActElementType.Artykul, cmd.getOptionValue("a")),
+                                new TypeAndIndex(ActElementType.Punkt, cmd.getOptionValue("p")),
+                                new TypeAndIndex(ActElementType.Litera, cmd.getOptionValue("l"))};
+                        System.out.println(statute.printActElement(optionValues));
                     }
                     else {
-                        String[] optionValues = {cmd.getOptionValue("a"), cmd.getOptionValue("p")};
-                        System.out.println(statute.printElement(optionValues, ActElement.Punkt));
+                        TypeAndIndex[] optionValues = {new TypeAndIndex(ActElementType.Artykul, cmd.getOptionValue("a")),
+                                new TypeAndIndex(ActElementType.Punkt, cmd.getOptionValue("p"))};
+                        System.out.println(statute.printActElement(optionValues));
                     }
                 }
                 else {
-                    String[] optionValues = {cmd.getOptionValue("a")};
-                    System.out.println(statute.printElement(optionValues, ActElement.Artykul));
+                    if (cmd.hasOption("l")){
+                        throw new IllegalArgumentException("You can't specify letter without specify point.");
+                    }
+                    else {
+                        TypeAndIndex[] optionValues = {new TypeAndIndex(ActElementType.Artykul, cmd.getOptionValue("a"))};
+                        System.out.println(statute.printActElement(optionValues));
+                    }
                 }
             }
         }
